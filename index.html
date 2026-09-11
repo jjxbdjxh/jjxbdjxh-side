@@ -497,9 +497,9 @@
         // 统一应用主题：同时更新 data-theme、按钮图标、Logo
         function applyTheme(theme) {
             html.setAttribute('data-theme', theme);
-            toggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+            toggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';logo.jpeg
             // 深色模式用 logo.jpeg，浅色模式用 logo-black.jpg
-            navLogo.src = theme === 'dark' ? 'logo.jpeg' : 'logo-black.jpg';
+            navLogo.src = theme === 'dark' ? 'logo-black.jpg' : 'logo.jpeg';
         }
 
         // 初始化（此时 <head> 里已经设置了 data-theme，这里同步 UI 即可）
