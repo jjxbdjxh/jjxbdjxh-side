@@ -1,9 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>坚决谢不当讲笑话</title>
+
+    <!-- ===== 提前设置主题，避免首屏闪烁 ===== -->
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var theme = saved
+                ? saved
+                : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
     <style>
         /* ===== 全局重置 & CSS 变量 ===== */
         * {
@@ -87,7 +99,7 @@
             width: 100%;
         }
 
-        /* Logo - 使用 .jpeg 格式 */
+        /* Logo */
         .nav-logo {
             display: flex;
             align-items: center;
@@ -103,7 +115,7 @@
             width: auto;
         }
 
-        /* 导航菜单 - 只保留你指定的入口 */
+        /* 导航菜单 */
         .nav-menu {
             display: flex;
             align-items: center;
@@ -123,7 +135,7 @@
             background: var(--bg-secondary);
         }
 
-        /* 导航右侧 - 只有主题切换按钮 */
+        /* 导航右侧 */
         .nav-actions {
             display: flex;
             align-items: center;
@@ -368,12 +380,12 @@
     <!-- ===== 导航栏 ===== -->
     <nav class="navbar">
         <div class="container">
-            <!-- Logo - 使用 .jpeg 格式 -->
+            <!-- Logo（加了 id="navLogo"，供 JS 切换） -->
             <a href="/" class="nav-logo">
-                <img src="logo.jpeg" alt="JJXBDJXH Logo，由抽象星星与品牌文字组成" />
+                <img src="logo.jpeg" alt="JJXBDJXH Logo，由抽象星星与品牌文字组成" id="navLogo" />
             </a>
 
-            <!-- 导航菜单 - 只保留你指定的入口 -->
+            <!-- 导航菜单 -->
             <ul class="nav-menu" id="navMenu">
                 <li><a href="mailto:mail.jjxbdjxh.eu.cc">邮箱</a></li>
                 <li><a href="https://download.jjxbdjxh.eu.cc">下载</a></li>
@@ -382,7 +394,7 @@
                 <li><a href="https://contact.jjxbdjxh.eu.cc">联系方式</a></li>
             </ul>
 
-            <!-- 右侧：只有主题切换 -->
+            <!-- 右侧：主题切换 + 汉堡 -->
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
                 <div class="hamburger" id="hamburger" aria-label="菜单">
@@ -477,25 +489,27 @@
 
     <!-- ===== JavaScript ===== -->
     <script>
-        // ----- 1. 深浅色切换 -----
+        // ----- 1. 深浅色切换 + Logo 同步 -----
         const toggleBtn = document.getElementById('themeToggle');
+        const navLogo = document.getElementById('navLogo');
         const html = document.documentElement;
 
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            html.setAttribute('data-theme', savedTheme);
-            toggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-        } else {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-            toggleBtn.textContent = prefersDark ? '☀️' : '🌙';
+        // 统一应用主题：同时更新 data-theme、按钮图标、Logo
+        function applyTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            toggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+            // 深色模式用 logo.jpeg，浅色模式用 logo-black.jpg
+            navLogo.src = theme === 'dark' ? 'logo.jpeg' : 'logo-black.jpg';
         }
 
+        // 初始化（此时 <head> 里已经设置了 data-theme，这里同步 UI 即可）
+        const currentTheme = html.getAttribute('data-theme') || 'light';
+        applyTheme(currentTheme);
+
+        // 点击切换
         toggleBtn.addEventListener('click', () => {
-            const current = html.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', next);
-            toggleBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
             localStorage.setItem('theme', next);
         });
 
