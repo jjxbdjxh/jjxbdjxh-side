@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>坚决谢不当讲笑话</title>
+    <title>JJXBDJXH · 探索 · 连接 · 创造</title>
 
     <!-- ===== 提前设置主题，避免首屏闪烁 ===== -->
     <script>
@@ -113,6 +113,8 @@
         .nav-logo img {
             height: 36px;
             width: auto;
+            /* 图片未加载完成前不占位闪烁 */
+            display: block;
         }
 
         /* 导航菜单 */
@@ -143,6 +145,7 @@
             flex-shrink: 0;
         }
 
+        /* 主题切换按钮：图标由 CSS 根据 data-theme 控制 */
         .theme-toggle {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
@@ -156,10 +159,18 @@
             cursor: pointer;
             color: var(--text);
             transition: all var(--transition);
+            padding: 0;
+            line-height: 1;
         }
         .theme-toggle:hover {
             transform: scale(1.05);
             border-color: var(--accent);
+        }
+        .theme-toggle::after {
+            content: "🌙";
+        }
+        [data-theme="dark"] .theme-toggle::after {
+            content: "☀️";
         }
 
         /* 移动端汉堡菜单 */
@@ -168,7 +179,9 @@
             flex-direction: column;
             gap: 4px;
             cursor: pointer;
-            padding: 4px;
+            padding: 6px;
+            background: transparent;
+            border: none;
         }
         .hamburger span {
             display: block;
@@ -343,7 +356,11 @@
                 padding: 16px 24px;
                 border-bottom: 1px solid var(--border);
                 backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
                 gap: 4px;
+            }
+            .nav-menu.open {
+                display: flex;
             }
             .nav-menu a {
                 width: 100%;
@@ -380,14 +397,14 @@
     <!-- ===== 导航栏 ===== -->
     <nav class="navbar">
         <div class="container">
-            <!-- Logo（加了 id="navLogo"，供 JS 切换） -->
+            <!-- Logo：src 由 JS 根据主题赋值 -->
             <a href="/" class="nav-logo">
-                <img src="logo.jpeg" alt="JJXBDJXH Logo，由抽象星星与品牌文字组成" id="navLogo" />
+                <img src="" alt="JJXBDJXH Logo" id="navLogo" />
             </a>
 
             <!-- 导航菜单 -->
             <ul class="nav-menu" id="navMenu">
-                <li><a href="mailto:mail.jjxbdjxh.eu.cc">邮箱</a></li>
+                <li><a href="https://mail.shungleemain.com">邮箱</a></li>
                 <li><a href="https://download.jjxbdjxh.eu.cc">下载</a></li>
                 <li><a href="https://blog.jjxbdjxh.cc">Blog</a></li>
                 <li><a href="https://server.jjxbdjxh.eu.cc">服务器</a></li>
@@ -396,10 +413,10 @@
 
             <!-- 右侧：主题切换 + 汉堡 -->
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
-                <div class="hamburger" id="hamburger" aria-label="菜单">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" type="button"></button>
+                <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="navMenu" type="button">
                     <span></span><span></span><span></span>
-                </div>
+                </button>
             </div>
         </div>
     </nav>
@@ -421,7 +438,7 @@
             <!-- 卡片 1: 邮箱 -->
             <div class="service-card">
                 <div class="card-icon">
-                    <img src="icon-email.png" alt="邮箱图标：扁平化蓝色信封" />
+                    <img src="icon-email.png" alt="邮箱图标" />
                 </div>
                 <h3>邮箱</h3>
                 <p>安全稳定的生力麵邮箱服务，沟通由此开始。</p>
@@ -431,27 +448,27 @@
             <!-- 卡片 2: 下载 -->
             <div class="service-card">
                 <div class="card-icon">
-                    <img src="icon-download.png" alt="下载图标：扁平化绿色向下箭头" />
+                    <img src="icon-download.png" alt="下载图标" />
                 </div>
                 <h3>下载中心</h3>
                 <p>高速、稳定的资源下载站，满足你的文件获取需求。</p>
                 <a href="https://download.jjxbdjxh.eu.cc" class="card-link">下载 →</a>
             </div>
 
-            <!-- 卡片 3: Blog -->
+            <!-- 卡片 3: Blog（已修复标签语法） -->
             <div class="service-card">
                 <div class="card-icon">
-                    <img src="icon-blog.png" alt="博客图标：扁平化橙色书本与笔" />
+                    <img src="icon-blog.png" alt="博客图标" />
                 </div>
                 <h3>Blog</h3>
                 <p>分享技术、生活与思考，用文字记录每一次成长。</p>
-                <a href="https://blog.jjxbdjxh.cc" class="card-link"博客 →</a>
+                <a href="https://blog.jjxbdjxh.cc" class="card-link">博客 →</a>
             </div>
 
             <!-- 卡片 4: 服务器 -->
             <div class="service-card">
                 <div class="card-icon">
-                    <img src="icon-server.png" alt="服务器图标：扁平化紫色机架" />
+                    <img src="icon-server.png" alt="服务器图标" />
                 </div>
                 <h3>服务器</h3>
                 <p>高性能、高可用性的服务器资源，为你的项目提供算力。</p>
@@ -461,7 +478,7 @@
             <!-- 卡片 5: 联系方式 -->
             <div class="service-card">
                 <div class="card-icon">
-                    <img src="icon-contact.png" alt="联系方式图标：扁平化红色电话" />
+                    <img src="icon-contact.png" alt="联系方式图标" />
                 </div>
                 <h3>联系方式</h3>
                 <p>多种渠道保持连接，我们随时在这里等你。</p>
@@ -475,7 +492,7 @@
                 </div>
                 <h3>更多服务</h3>
                 <p>持续扩展中，为你带来更多有价值的工具与内容。</p>
-                <a href="#" class="card-link">即将上线 →</a>
+                <a href="javascript:void(0)" class="card-link">即将上线 →</a>
             </div>
         </div>
     </main>
@@ -483,7 +500,7 @@
     <!-- ===== 页脚 ===== -->
     <footer class="footer">
         <div class="container">
-            <p>© 2026 JJXBDJXH · 以极简构建无限</p>
+            <p>© <span id="year"></span> JJXBDJXH · 以极简构建无限</p>
         </div>
     </footer>
 
@@ -494,14 +511,13 @@
         const navLogo = document.getElementById('navLogo');
         const html = document.documentElement;
 
-      function applyTheme(theme) {
-    html.setAttribute('data-theme', theme);
-    toggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-    // 深色模式用 logo-black.jpg，浅色模式用 logo.jpeg
-    navLogo.src = theme === 'dark' ? 'logo-black.jpg' : 'logo.jpeg';
-}
+        function applyTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            // 深色模式用 logo-black.jpg，浅色模式用 logo.jpeg
+            navLogo.src = theme === 'dark' ? 'logo-black.jpg' : 'logo.jpeg';
+        }
 
-        // 初始化（此时 <head> 里已经设置了 data-theme，这里同步 UI 即可）
+        // 初始化（<head> 里已设置 data-theme，这里同步 Logo 即可）
         const currentTheme = html.getAttribute('data-theme') || 'light';
         applyTheme(currentTheme);
 
@@ -512,33 +528,33 @@
             localStorage.setItem('theme', next);
         });
 
-        // ----- 2. 移动端汉堡菜单 -----
+        // ----- 2. 移动端汉堡菜单（class 切换）-----
         const hamburger = document.getElementById('hamburger');
         const navMenu = document.getElementById('navMenu');
 
+        function closeMenu() {
+            navMenu.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            hamburger.setAttribute('aria-label', '打开菜单');
+        }
+
         hamburger.addEventListener('click', () => {
-            if (navMenu.style.display === 'flex') {
-                navMenu.style.display = 'none';
-            } else {
-                navMenu.style.display = 'flex';
-            }
+            const isOpen = navMenu.classList.toggle('open');
+            hamburger.setAttribute('aria-expanded', String(isOpen));
+            hamburger.setAttribute('aria-label', isOpen ? '关闭菜单' : '打开菜单');
         });
 
+        // 点击菜单项后自动收起（仅移动端需要）
         navMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth <= 768) {
-                    navMenu.style.display = 'none';
+                    closeMenu();
                 }
             });
         });
 
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                navMenu.style.display = 'flex';
-            } else {
-                navMenu.style.display = 'none';
-            }
-        });
+        // ----- 3. 页脚年份 -----
+        document.getElementById('year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
